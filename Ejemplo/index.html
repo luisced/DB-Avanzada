@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="arq/jquery/dist/jquery.min.js"></script>
+
+		<title>Document</title>
+	</head>
+	<body>
+		<h1>&iexcl;Hola Mundo</h1>
+		<br />
+		<div id="d_data"></div>
+	</body>
+	<script>
+		$(document).ready(function () {
+			if (navigator.onLine == true) {
+				$.ajax({
+					data: { action: "act_getdata" },
+					url: "http://localhost/Ejemplo/srvBO.php",
+					type: "POST",
+					cache: false,
+					error: function (xhr, status, error) {
+						prGotError(xhr, status, error);
+					},
+					success: function (data, status, xhr) {
+						var lHTML = "<table>";
+						lHTML += "<tr>";
+						lHTML += "<th>Order Number</th>";
+						lHTML += "<th>Status</th>";
+						lHTML += "<tr>";
+						$.each(data.answer, function (key, val) {
+							lHTML += "<tr>";
+							lHTML += "<td>" + val.orderNumber + "</td>";
+							lHTML += "<td>" + val.status + "</td>";
+							lHTML += "<tr>";
+						});
+						lHTML += "</table>";
+						$("#d_data").html(lHTML);
+					},
+				}); // $.ajax()
+			} else {
+				console.log("Error: No hay conexión");
+			}
+		});
+	</script>
+</html>
